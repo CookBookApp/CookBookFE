@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.app-bottom-container {
+  background-color: blue;
+  width: 100%
+}
+
+.nav {
+  background-color: red;
+  width: 10rem;
+}
+
+.content {
+  background-color: orange;
+  width: 20rem;
+}
+
+.sidepanel {
+  background-color: darkmagenta;
+  width: 10rem;
+}
+
+.search {
+  background-color: yellow;
+  width: 100%
+}

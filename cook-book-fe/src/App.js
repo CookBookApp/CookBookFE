@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Nav from './containers/Nav';
 import Content from './containers/Content'
+import SidePanel from './containers/SidePanel'
+import Search from './containers/Search'
 import './App.css';
 
 
@@ -22,9 +24,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <Nav />
-      <Content recipes={this.state.recipes}/>
-    </div>
+        <Search />
+        <div className="app-bottom-container">
+        <Nav />
+        <Content recipes={this.state.recipes}/>
+        <SidePanel />
+        </div>
+      </div>
     );
   }
 }
