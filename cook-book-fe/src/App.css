@@ -86,3 +86,7 @@
 .search-input {
   margin: .75rem;
 }
+
+.recipe-card-sub-details {
+  display: flex;
+}

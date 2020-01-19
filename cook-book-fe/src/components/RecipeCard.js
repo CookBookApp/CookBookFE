@@ -16,7 +16,7 @@ class RecipeCard extends Component {
                     </div>
                     <div className="recipe-card-sub-details">
                         <div className="recipe-card-rating">
-                            <h3>{ this.props.recipe.rating }</h3>
+                            <h3>{ this.props.recipe.user.username }</h3>
                         </div>
                         <div className="recipe-card-time">
                             <h3>{ this.props.recipe.total_time }</h3>
