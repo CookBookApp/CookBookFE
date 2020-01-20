@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 class NewRecipe extends Component {
     render() {
         return (
-            <div>
-                
+            <div className='content-feed'>
+                <h1>New Recipe</h1>
             </div>
         );
     }

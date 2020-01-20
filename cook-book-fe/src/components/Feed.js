@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RecipeCard from './RecipeCard'
+import { Card } from 'semantic-ui-react'
 
 class Feed extends Component {
 
@@ -10,7 +11,10 @@ class Feed extends Component {
     render() {
         return (
             <div className="feed">
-                {this.createRecipeCards()}
+                <Card.Group itemsPerRow={1}>
+                    {this.createRecipeCards()}
+                </Card.Group>
+
             </div>
         );
     }
