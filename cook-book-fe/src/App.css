@@ -46,7 +46,8 @@
   display: flex;
   background-color: blue;
   width:100%;
-  max-height: 700px;
+  min-height: 100%;
+  
 }
 
 .nav {

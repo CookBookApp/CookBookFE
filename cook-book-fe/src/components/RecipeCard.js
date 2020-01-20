@@ -17,7 +17,7 @@ class RecipeCard extends Component {
                         <span className='date'>{ this.props.recipe.total_time}</span>
                     </Card.Meta>
                     <Card.Description>
-                        {this.props.recipe.user.username}
+                        <Image src={this.props.recipe.user.image} size="mini" circular /> {this.props.recipe.user.username}
                     </Card.Description>
                 </Card.Content>
             </Card>
