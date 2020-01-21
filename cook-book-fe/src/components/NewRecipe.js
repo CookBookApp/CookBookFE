@@ -12,7 +12,8 @@ class NewRecipe extends Component {
     }
 
     handleClick = (keyword, index) => {
-        if (!this.state.keywords.includes(keyword))
+        console.log(keyword)
+        if (!this.state.keywords.includes(keyword) && this.state.keywords.length < 5)
             this.setState({
                 keywords:[...this.state.keywords,keyword].sort()
             })
@@ -22,6 +23,12 @@ class NewRecipe extends Component {
                 keywords:newKeywords
             })
         }
+    }
+
+    recipeNameChange = (event) => {
+        this.setState({
+            name:event.target.value
+        }, () => {console.log(this.state)})
     }
 
     addKeywordButtons = () => {
@@ -40,7 +47,7 @@ class NewRecipe extends Component {
                 'Spicy',
                 'Vegan',
                 'Veggies'].map((keyword,index)=> {
-                return  <Button key={index} onClick={() => this.handleClick(keyword,index)} size="mini" >{keyword}</Button>
+                return  <Button key={index} size="mini" onClick={() => this.handleClick(keyword,index)} >{keyword}</Button>
         })
     }
 
@@ -52,11 +59,19 @@ class NewRecipe extends Component {
         return (
             <div className='content-feed'>
                 <h1>New Recipe</h1>
+                <Segment textAlign="left">
+                    <Form.Field onChange={this.recipeNameChange}>
+                        <label>Recipe Name</label>
+                        <br/>
+                        <input placeholder="Recipe Name" />
+                    </Form.Field>
+                </Segment>
                 <Segment>
                     {this.state.keywords.join(" / ")}
                 </Segment>
                 <Segment>
-                    Keywords<br/>
+                    Keywords (Max. 5)
+                    <br/>
                     {this.addKeywordButtons()}
                 </Segment>
 

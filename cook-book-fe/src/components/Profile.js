@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Feed from './Feed'
+import { Image } from 'semantic-ui-react'
 
 class Profile extends Component {
 
@@ -20,7 +21,7 @@ class Profile extends Component {
     render() {
         return (
             <div className="content-feed">
-                <h1>{`${this.state.user.username}'s Recipes` }</h1>
+                <Image src={`${this.state.user.image}`} size="small" circular /><h1>{`${this.state.user.username}'s Recipes` }</h1>
                 <Feed recipes={ this.state.recipes } />
             </div>
         );
