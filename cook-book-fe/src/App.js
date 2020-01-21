@@ -7,6 +7,8 @@ import Search from './containers/Search'
 import Profile from './components/Profile'
 import NewRecipe from './components/NewRecipe'
 import CookbookPage from './components/CookbookPage'
+import LogIn from './components/LogIn'
+import SignUp from './components/SignUp'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 
@@ -15,7 +17,9 @@ import './App.css';
 class App extends Component {
 
   state = {
+
     currentUser:{id:3}
+
   }
 
 
@@ -23,7 +27,9 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={ Main } />
+          <Route exact path="/" render={() => <Main />}/>
+          <Route exact path="/login" component={ LogIn }/>
+          <Route exact path="/signup" component={ SignUp }/>
           <Route exact path="/home" render={(renderProps) => {
                   return( 
                           <div className="App">
