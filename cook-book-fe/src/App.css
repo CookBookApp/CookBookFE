@@ -71,6 +71,11 @@
   overflow: auto
 }
 
+#time-input {
+  margin-left:2rem;
+  margin-top:.5rem;
+}
+
 #add-button{
   margin-left: 1rem;
   margin-top: 1rem;

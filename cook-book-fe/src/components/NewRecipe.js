@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Segment, Image, Input, Icon } from 'semantic-ui-react'
+import { Button, Form, Segment, Image, Input, Icon, Label } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 import { storage } from '../Firebase';
 
@@ -7,14 +7,18 @@ class NewRecipe extends Component {
 
     state = {
         name:'',
-        keywords:[],
+        prepTime:0,
+        cookTime:0,
+        totalTime:0,
         imgUrl:'',
         image:'',
         imgBase:null,
         ingredients:[""],
         ingredientInputs:['ingredient-0'],
+        keywords:[],
         steps:[],
-        stepInputs:['step-0']
+        stepInputs:['step-0'],
+        currentUser:3
     }
 
     handleClick = (keyword) => {
@@ -96,13 +100,16 @@ class NewRecipe extends Component {
             storage.ref('images').child(image.name).getDownloadURL().then(url => {
                 this.setState({
                     imgUrl:url
-                }, () => console.log(this.state))
+                }, () => {
+                    console.log(this.state)
+                    this.postRecipe()
+                })
             })
         })
     }
 
     postRecipe = () => {
-        const { name, keywords, imgUrl, ingredients, steps } = this.state
+        const { name, keywords, imgUrl, ingredients, steps, cookTime, prepTime, totalTime } = this.state
         fetch('http://localhost:3000/recipes', {
             method:'POST',
             headers: {
@@ -110,11 +117,15 @@ class NewRecipe extends Component {
                 'accept':'application/json'
             },
             body: JSON.stringify({
-                name:name,
+                description:name,
                 keywords:keywords,
                 image:imgUrl,
                 ingredients:ingredients,
-                steps:steps
+                steps:steps,
+                cook_time:cookTime,
+                prep_time:prepTime,
+                total_time:totalTime,
+                user_id:this.state.currentUser
             })
         })
         .then(r => r.json())
@@ -199,6 +210,20 @@ class NewRecipe extends Component {
         })  
     }
 
+    prepTimeChange = (event) => {
+        this.setState({
+            totalTime:(Number(event.target.value) + this.state.cookTime),
+            prepTime:Number(event.target.value)
+        })
+    }
+
+    cookTimeChange = (event) => {
+        this.setState({
+            totalTime:(Number(event.target.value) + this.state.prepTime),
+            cookTime:Number(event.target.value)
+        })
+    }
+
     handleChange = (inputType,event) => {
         if (inputType === "ingredient") {
             let inputId = event.target.id,
@@ -268,7 +293,15 @@ class NewRecipe extends Component {
                             </div>
                         )}
                     </Dropzone>
-                    {/* <ImageUpload /> */}
+                </Segment>
+                <Segment>
+                    <Form.Field>
+                        <h5>{`${this.state.totalTime} mins`}</h5>
+                        <h5>Prep Time
+                        <Input id="time-input" type="number" placeholder="In minutes" onChange={this.prepTimeChange}></Input></h5>
+                        <h5>Cook Time
+                        <Input id="time-input" type="number" placeholder="In minutes" onChange={this.cookTimeChange}></Input></h5>
+                    </Form.Field>
                 </Segment>
                 <Segment>
                     <strong>{this.state.keywords.join(" / ")}</strong>
