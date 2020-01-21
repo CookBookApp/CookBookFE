@@ -62,7 +62,8 @@
 .content-feed {
   background-color: orange;
   width: 600px;
-  max-height: 90%;
+  max-height: 100%;
+  overflow: auto
 }
 
 .feed {
@@ -70,6 +71,18 @@
   overflow: auto
 }
 
+#add-button{
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+.ingredient-input {
+  width:33rem;
+}
+
+#input-test {
+  width: 20rem
+}
 .side-panel {
   background-color: darkmagenta;
   width: 325px;
