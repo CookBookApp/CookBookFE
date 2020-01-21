@@ -9,6 +9,7 @@ import NewRecipe from './components/NewRecipe'
 import CookbookPage from './components/CookbookPage'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'
+import SearchResults from './containers/SearchResults'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 
@@ -17,9 +18,20 @@ import './App.css';
 class App extends Component {
 
   state = {
+    currentUser:{id:3},
+    searchValue: '',
+    searchType: ''
+  }
 
-    currentUser:{id:3}
 
+  handleSearch = (searchState) => {
+
+    this.setState({
+      searchValue: searchState.searchValue,
+      searchType:searchState.searchType
+    })
+
+    console.log(searchState)
   }
 
 
@@ -33,7 +45,7 @@ class App extends Component {
           <Route exact path="/home" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch} />
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Content {...renderProps} currentUser={this.state.currentUser} />
@@ -45,7 +57,7 @@ class App extends Component {
           <Route exact path="/profile/:id" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch}/>
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Profile {...renderProps} currentUser={ this.state.currentUser } />
@@ -57,7 +69,7 @@ class App extends Component {
           <Route exact path="/new-recipe" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch}/>
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <NewRecipe {...renderProps} currentUser={ this.state.currentUser } />
@@ -69,7 +81,7 @@ class App extends Component {
           <Route exact path="/my-cookbooks" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch}/>
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <CookbookPage {...renderProps} currentUser={ this.state.currentUser } />
@@ -78,8 +90,21 @@ class App extends Component {
                           </div>
                   )
           } }  />
+          <Route exact path="/search" render={(renderProps) => {
+                  return( 
+                          <div className="App">
+                            <Search handleSearch={this.handleSearch} />
+                            <div className="app-bottom-container">
+                              <Nav currentUser={ this.state.currentUser } />
+                              <SearchResults {...renderProps} currentUser={ this.state.currentUser } searchValue={this.state.searchValue} searchType={this.state.searchType} />
+                              <SidePanel />
+                            </div>
+                          </div>
+                  )
+          } }  />
         </Switch>
       </Router>
+
     );
   }
 }
