@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Button, Form, Segment, Image, Input, Icon } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
+import { storage } from '../Firebase';
 
 class NewRecipe extends Component {
 
     state = {
         name:'',
         keywords:[],
-        imageSrc:null,
+        imgUrl:'',
+        image:'',
+        imgBase:null,
         ingredients:[""],
         ingredientInputs:['ingredient-0'],
         steps:[],
@@ -63,18 +66,61 @@ class NewRecipe extends Component {
     })
     }
 
-    handleImageUpload = (acceptedFiles,rejectedFiles) => {
+    displayImage = (acceptedFiles,rejectedFiles) => {
         const currentImage = acceptedFiles[0]
         const reader = new FileReader()
         reader.addEventListener("load", ()=>{
             console.log(reader.result)
             this.setState({
-                imgSrc:reader.result
+                image:currentImage,
+                imgBase:reader.result
             })
         },false)
         reader.readAsDataURL(currentImage)
         console.log(acceptedFiles)
-        console.log('rejected',rejectedFiles)
+    }
+    
+    submitRecipe = () => {
+        const {image} = this.state;
+        console.log(image, storage)
+
+
+        const uploadTask = storage.ref(`images/${image.name}`).put(image)
+        uploadTask.on('state_changed', 
+        (snapshot) => {
+
+        }, (error) => {
+            console.log(error)
+        }, () => {
+            //complete function
+            storage.ref('images').child(image.name).getDownloadURL().then(url => {
+                this.setState({
+                    imgUrl:url
+                }, () => console.log(this.state))
+            })
+        })
+    }
+
+    postRecipe = () => {
+        const { name, keywords, imgUrl, ingredients, steps } = this.state
+        fetch('http://localhost:3000/recipes', {
+            method:'POST',
+            headers: {
+                'content-type':'application/json',
+                'accept':'application/json'
+            },
+            body: JSON.stringify({
+                name:name,
+                keywords:keywords,
+                image:imgUrl,
+                ingredients:ingredients,
+                steps:steps
+            })
+        })
+        .then(r => r.json())
+        .then(recipe => {
+            console.log(recipe)
+        })
     }
 
     renderIngredientInputs = () => {
@@ -196,12 +242,8 @@ class NewRecipe extends Component {
         }
     }
 
-    handleSubmit = () => {
-        console.log(this.state);
-    }
-
     render() {
-        const {imgSrc} = this.state
+        const {imgBase} = this.state
         return (
             <div className='content-feed'>
                 <h1>New Recipe</h1>
@@ -211,14 +253,14 @@ class NewRecipe extends Component {
                         <Input id="input-test" textAlign="center" placeholder='Recipe Name' />
                     </Form.Field>
                         <br/>
-                        {imgSrc !== null ? 
+                        {imgBase !== null ? 
                         <div className="upload-image-container">
-                            <Image src={imgSrc} rounded /> 
+                            <Image src={imgBase} rounded /> 
                         </div>
                             : ''}
                 </Segment>
                 <Segment>
-                    <Dropzone onDrop={this.handleImageUpload} accept='image/jpeg, image/png' multiple={false}>
+                    <Dropzone onDrop={this.displayImage} accept='image/jpeg, image/png' multiple={false}>
                         {({getRootProps, getInputProps}) => (
                             <div {...getRootProps()}>
                             <input {...getInputProps()} />
@@ -257,7 +299,7 @@ class NewRecipe extends Component {
                     </Form.Field>
                 </Segment>
                 <Segment>
-                    <Button onClick={this.handleSubmit}>Submit</Button>
+                    <Button onClick={this.submitRecipe}>Submit</Button>
                 </Segment>
 
             </div>
