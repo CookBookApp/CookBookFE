@@ -22,8 +22,7 @@ class Content extends Component {
         return (
             <div className="content-feed">
                 <Switch>
-                    <Route path="/" render={ renderProps => <Feed { ...renderProps } recipes={ this.state.recipes } /> } />
-                    <Route path="/profile" render={ renderProps => <Profile { ...renderProps } />} />
+                    <Route path="/" render={ renderProps => <Feed { ...renderProps } goToRecipe={this.props.goToRecipe} goToProfile={this.props.goToProfile} recipes={ this.state.recipes } /> } /> 
                 </Switch>
             </div>
         );

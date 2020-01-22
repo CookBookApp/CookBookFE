@@ -9,6 +9,7 @@ import NewRecipe from './components/NewRecipe'
 import CookbookPage from './components/CookbookPage'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'
+import RecipePage from './components/RecipePage'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 
@@ -17,11 +18,24 @@ import './App.css';
 class App extends Component {
 
   state = {
-
-    currentUser:{id:3}
-
+    currentUser:{id:3},
+    selectedRecipe:null,
+    selectedUser:null
   }
 
+  goToRecipe = (recipe, user) => {
+    this.setState({
+      selectedRecipe:recipe,
+      selectedUser:user
+    },() => console.log(this.state.selectedRecipe))
+  }
+
+  goToProfile = (user,recipe) => {
+    this.setState({
+      selectedUser:user,
+      selectedRecipe:recipe
+    })
+  }
 
   render() {
     return (
@@ -36,7 +50,7 @@ class App extends Component {
                             <Search />
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
-                              <Content {...renderProps} currentUser={this.state.currentUser} />
+                              <Content {...renderProps} currentUser={this.state.currentUser} goToProfile={this.goToProfile} goToRecipe={this.goToRecipe}/>
                               <SidePanel />
                             </div>
                           </div>
@@ -48,7 +62,7 @@ class App extends Component {
                             <Search />
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
-                              <Profile {...renderProps} currentUser={ this.state.currentUser } />
+                              <Profile {...renderProps} currentUser={ this.state.currentUser } user={this.state.selectedUser} recipe={this.state.recipes} />
                               <SidePanel />
                             </div>
                           </div>
@@ -78,6 +92,19 @@ class App extends Component {
                           </div>
                   )
           } }  />
+          <Route exact path="/recipe/:id" render={(renderProps) => {
+                  return( 
+                          <div className="App">
+                            <Search />
+                            <div className="app-bottom-container">
+                              <Nav currentUser={ this.state.currentUser } />
+                              <RecipePage {...renderProps} currentUser={ this.state.currentUser } user={this.state.selectedUser} recipe={this.state.selectedRecipe} goToProfile={this.goToProfile} />
+                              <SidePanel />
+                            </div>
+                          </div>
+                  )
+          } }  />
+
         </Switch>
       </Router>
     );
