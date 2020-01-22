@@ -49,7 +49,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Content {...renderProps} currentUser={this.state.currentUser} />
-                              <SidePanel />
+                              <SidePanel infoType="random"/>
                             </div>
                           </div>
                   )
@@ -61,7 +61,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Profile {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel />
+                              <SidePanel infoType="cookbook" />
                             </div>
                           </div>
                   )
@@ -73,7 +73,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <NewRecipe {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel />
+                              <SidePanel infoType="random" />
                             </div>
                           </div>
                   )
@@ -85,7 +85,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <CookbookPage {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel />
+                              <SidePanel infoType="random cookbook" />
                             </div>
                           </div>
                   )
@@ -97,7 +97,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <SearchResults {...renderProps} currentUser={ this.state.currentUser } searchValue={this.state.searchValue} searchType={this.state.searchType} />
-                              <SidePanel />
+                              <SidePanel infoType="filter"/>
                             </div>
                           </div>
                   )
