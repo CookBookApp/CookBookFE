@@ -4,8 +4,6 @@ import { Card } from 'semantic-ui-react'
 class SidePanel extends Component {
 
     state = {
-        cookBookArray: [],
-        recipesArray: [],
         infoArray: []
     }
 
@@ -14,13 +12,13 @@ class SidePanel extends Component {
         if(this.props.infoType === "random"){
             fetch(`http://localhost:3000/recipes`)
             .then(resp => resp.json())
-            .then(recipes => this.setState({infoArray: recipes, recipesArray: recipes}))
+            .then(recipes => this.setState({infoArray: recipes}))
 
                
         } else if(this.props.infoType === "cookbook"){
             fetch(`http://localhost:3000/cookbooks`)
             .then(resp => resp.json())
-            .then(cookbooks => this.setState({infoArray: cookbooks, cookBookArray: cookbooks}))
+            .then(cookbooks => this.setState({infoArray: cookbooks}))
         }
     }
 
@@ -40,15 +38,14 @@ class SidePanel extends Component {
     
 
     renderInfo = () => {
-        if(this.state.infoArray === this.state.recipesArray){
+        if(this.props.infoType === "random"){
 
-          return  this.state.recipesArray.map(recipe => { return {header: recipe.description, description: recipe.user.username , meta: recipe.total_time} })
+          return  this.state.infoArray.map(recipe => { return {header: recipe.description, description: recipe.user.username , meta: recipe.total_time} })
 
-        } else if(this.state.infoArray === this.state.cookBookArray){
+        } else if(this.props.infoType.includes("cookbook")){
 
-          return  this.state.cookBookArray.map(cookbook => { return {header: cookbook.title, description: cookbook.description , meta: cookbook.image} })
+          return  this.state.infoArray.map(cookbook => { return {header: cookbook.title, description: cookbook.description , meta: cookbook.image} })
           
-
         }
     }
     
