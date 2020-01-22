@@ -113,3 +113,7 @@
 .recipe-card-sub-details {
   display: flex;
 }
+
+#side-seg-container{
+  background-color: black;
+}

@@ -10,6 +10,7 @@ import CookbookPage from './components/CookbookPage'
 import LogIn from './components/LogIn'
 import SignUp from './components/SignUp'
 import RecipePage from './components/RecipePage'
+import SearchResults from './containers/SearchResults'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css';
 
@@ -20,7 +21,9 @@ class App extends Component {
   state = {
     currentUser:{id:3},
     selectedRecipe:null,
-    selectedUser:null
+    selectedUser:null,
+    searchValue: '',
+    searchType: ''
   }
 
   goToRecipe = (recipe, user) => {
@@ -28,6 +31,15 @@ class App extends Component {
       selectedRecipe:recipe,
       selectedUser:user
     },() => console.log(this.state.selectedRecipe))
+  }
+
+
+  handleSearch = (searchState) => {
+
+    this.setState({
+      searchValue: searchState.searchValue,
+      searchType:searchState.searchType
+    })
   }
 
   goToProfile = (user,recipe) => {
@@ -47,11 +59,11 @@ class App extends Component {
           <Route exact path="/home" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch} />
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Content {...renderProps} currentUser={this.state.currentUser} goToProfile={this.goToProfile} goToRecipe={this.goToRecipe}/>
-                              <SidePanel />
+                              <SidePanel infoType="random"/>
                             </div>
                           </div>
                   )
@@ -59,11 +71,11 @@ class App extends Component {
           <Route exact path="/profile/:id" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch}/>
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Profile {...renderProps} currentUser={ this.state.currentUser } user={this.state.selectedUser} recipe={this.state.recipes} />
-                              <SidePanel />
+                              <SidePanel infoType="cookbook" />
                             </div>
                           </div>
                   )
@@ -71,11 +83,11 @@ class App extends Component {
           <Route exact path="/new-recipe" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch}/>
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <NewRecipe {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel />
+                              <SidePanel infoType="random" />
                             </div>
                           </div>
                   )
@@ -83,11 +95,23 @@ class App extends Component {
           <Route exact path="/my-cookbooks" render={(renderProps) => {
                   return( 
                           <div className="App">
-                            <Search />
+                            <Search handleSearch={this.handleSearch}/>
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <CookbookPage {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel />
+                              <SidePanel infoType="random cookbook" />
+                            </div>
+                          </div>
+                  )
+          } }  />
+          <Route exact path="/search" render={(renderProps) => {
+                  return( 
+                          <div className="App">
+                            <Search handleSearch={this.handleSearch} />
+                            <div className="app-bottom-container">
+                              <Nav currentUser={ this.state.currentUser } />
+                              <SearchResults {...renderProps} currentUser={ this.state.currentUser } searchValue={this.state.searchValue} searchType={this.state.searchType} />
+                              <SidePanel infoType="filter"/>
                             </div>
                           </div>
                   )
@@ -107,6 +131,7 @@ class App extends Component {
 
         </Switch>
       </Router>
+
     );
   }
 }

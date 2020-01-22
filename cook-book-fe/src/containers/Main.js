@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import LogIn from '../components/LogIn';
-import SignUp from '../components/SignUp';
+// import LogIn from '../components/LogIn';
+// import SignUp from '../components/SignUp';
 import { Link } from 'react-router-dom';
 import { Icon } from 'semantic-ui-react'
 

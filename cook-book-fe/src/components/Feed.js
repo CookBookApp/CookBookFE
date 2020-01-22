@@ -12,9 +12,9 @@ class Feed extends Component {
         return (
             <div className="feed">
                 <Segment>
-                <Card.Group itemsPerRow={1}>
-                    {this.createRecipeCards()}
-                </Card.Group>
+                    <Card.Group itemsPerRow={1}>
+                        {this.createRecipeCards()}
+                    </Card.Group>
                 </Segment>
                     
 
