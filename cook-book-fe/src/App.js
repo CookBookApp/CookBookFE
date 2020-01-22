@@ -20,19 +20,38 @@ class App extends Component {
   state = {
     currentUser:{id:3},
     searchValue: '',
-    searchType: ''
+    searchType: '',
+    recipesArray: [],
+    cookBookArray: []
   }
 
 
   handleSearch = (searchState) => {
-
     this.setState({
       searchValue: searchState.searchValue,
       searchType:searchState.searchType
     })
-
-    console.log(searchState)
   }
+
+
+  fetchRecipes = () => { 
+      fetch(`http://localhost:3000/recipes`)
+      .then(resp => resp.json())
+      .then(recipes => this.setState({recipesArray: recipes}))   
+  }
+
+  fetchCookBooks = () => {
+    fetch(`http://localhost:3000/cookbooks`)
+    .then(resp => resp.json())
+    .then(cookbooks => this.setState({cookBookArray: cookbooks}))
+  }
+
+
+  componentDidMount(){
+    this.fetchRecipes();
+    this.fetchCookBooks();
+  }
+
 
 
   render() {
@@ -49,7 +68,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Content {...renderProps} currentUser={this.state.currentUser} />
-                              <SidePanel infoType="random"/>
+                              <SidePanel infoType="random" recipes={this.state.recipesArray} />
                             </div>
                           </div>
                   )
@@ -61,7 +80,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <Profile {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel infoType="cookbook" />
+                              <SidePanel infoType="cookbook" cookbooks={this.state.cookBookArray} />
                             </div>
                           </div>
                   )
@@ -73,7 +92,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <NewRecipe {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel infoType="random" />
+                              <SidePanel infoType="random" recipes={this.state.recipesArray} />
                             </div>
                           </div>
                   )
@@ -85,7 +104,7 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <CookbookPage {...renderProps} currentUser={ this.state.currentUser } />
-                              <SidePanel infoType="random cookbook" />
+                              <SidePanel infoType="random cookbook" cookbooks={this.state.cookBookArray} />
                             </div>
                           </div>
                   )
