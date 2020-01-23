@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CookbookCard from '../components/CookbookCard'
 import RecipeCard from '../components/RecipeCard'
 import UserCard from '../components/UserCard'
+import Feed from '../components/Feed'
 
 export default class SearchResults extends Component {
 
@@ -9,17 +10,20 @@ export default class SearchResults extends Component {
         allItems: [],
         type: '',
         searchType: '',
-        searchValue: ''
+        searchValue: '',
+        keywordRecipes:null
     }
 
 
     getSearchResults = () => {
-    let API = 'http://localhost:3000/',
-    
-    searchType = this.props.searchType,
-    searchValue = this.props.searchValue
+    let API = 'http://localhost:3000/'
+    const { searchType, searchValue } = this.state
 
-        fetch(API + searchType)
+        fetch(API + searchType, {
+            headers:{
+                'Authorization':`Bearer ${localStorage.token}`
+            }
+        })
         .then(resp => resp.json())
         .then(allItems => { 
             let newArr
@@ -32,38 +36,58 @@ export default class SearchResults extends Component {
             }
             this.setState({
                 allItems: newArr,
-                type: searchType
             })
             }
         )
     }
     componentDidMount(){
-        this.setState({
-            searchValue:this.props.searchValue,
-            searchType:this.props.searchType
-        }, () => this.getSearchResults() )
+        if( this.props.searchType !== 'keywords'){
+            this.setState({
+                searchValue:this.props.searchValue,
+                searchType:this.props.searchType
+            }, () => this.getSearchResults() )
+        } else  {
+            this.setState({
+                searchType:this.props.searchType,
+                keywordRecipes:this.props.recipes
+            },()=> console.log(this.props.keywordRecipes))
+        }
     }
 
 
     renderPage = () => {
-        if(this.state.type === "users"){
-            return this.state.allItems.map(item => <UserCard user={item} />)
-        } else if(this.state.type === "recipes"){
-            return this.state.allItems.map(item => <RecipeCard recipe={item} />)
-        } else if(this.state.type === "cookbooks"){
-            return this.state.allItems.map(item => <CookbookCard cookbook={item} />)
-        }
+        const { searchType, allItems } = this.state
+        if(searchType === "users"){
+            return allItems.map(item => <UserCard user={item} />)
+        } else if(searchType === "recipes"){
+            return allItems.map(item => <RecipeCard recipe={item} />)
+        } else if(searchType === "cookbooks"){
+            return allItems.map(item => <CookbookCard cookbook={item} />)
+        } 
+        
     }
 
     
 
 
     render() {
-        console.log(this.state)
-        return (
-            <div className="content-feed">
-               {this.renderPage()}
-            </div>
-        )
+        if (this.state.searchType !== 'keywords') {
+            return (
+                <div className="content-feed">
+                   {this.renderPage()}
+                </div>
+            )
+        } else if( this.state.searchType === 'keywords' && this.props.recipes !== null ){
+            return (<div className="content-feed">
+                   {this.props.recipes.map(recipe => <RecipeCard recipe={recipe}/>)}
+                    </div>
+            )
+        } else {
+            return (<div className="content-feed">
+                   
+                    </div>
+            )
+        }
+        
     }
 }

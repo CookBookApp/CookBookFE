@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import Feed from '../components/Feed';
 import Profile from '../components/Profile'
 
@@ -10,11 +10,22 @@ class Content extends Component {
     }
     
     componentDidMount () {
-        fetch('http://localhost:3000/recipes')
+        if (!localStorage.token){
+            this.props.history.push('/')
+        }
+        fetch('http://localhost:3000/recipes', {
+            headers: {
+                'Authorization':`Bearer ${localStorage.token}`
+            }
+        })
         .then(r => r.json())
-        .then(recipes => this.setState({
-          recipes:recipes
-        },console.log(this.props)) )
+        .then(recipes => {
+            console.log(recipes)
+            this.setState({
+                recipes:recipes
+            },console.log(this.props)) 
+        }
+        )
     }
 
 
@@ -29,4 +40,4 @@ class Content extends Component {
     }
 }
 
-export default Content;
+export default withRouter(Content);

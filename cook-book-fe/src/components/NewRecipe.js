@@ -114,7 +114,8 @@ class NewRecipe extends Component {
             method:'POST',
             headers: {
                 'content-type':'application/json',
-                'accept':'application/json'
+                'accept':'application/json',
+                'Authorization':`Bearer ${localStorage.token}`
             },
             body: JSON.stringify({
                 description:name,

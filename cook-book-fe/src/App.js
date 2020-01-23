@@ -19,13 +19,50 @@ import './App.css';
 class App extends Component {
 
   state = {
-    currentUser:{id:3},
+    currentUser:null,
     selectedRecipe:null,
     selectedUser:null,
     searchValue: '',
-    searchType: ''
+    searchType: '',
+    keywords:null,
+    keywordSearchRecipes:null
   }
 
+  handleLogin = (currentUser) => {
+    this.setState({
+      currentUser
+    })
+  }
+
+
+  keywordSearch = (keywords) => {
+    console.log(keywords)
+    this.setState({
+      keywords:keywords
+    }, () => this.keywordRecipesFetch())
+  }
+
+  keywordRecipesFetch = () => {
+    fetch('http://localhost:3000/recipe_keywords', {
+      headers: {
+          'Authorization':`Bearer ${localStorage.token}`
+      }})
+    .then(r => r.json())
+    .then(keywRecipes => {
+      console.log(keywRecipes)
+      let newRecipes = []
+      this.state.keywords.forEach( keyword => {
+        let filteredRecipes = keywRecipes.filter(keywRec => keywRec.keyword.keyword === keyword)
+        filteredRecipes = filteredRecipes.map(keywRec => keywRec.recipe)
+        Array.prototype.push.apply(newRecipes,filteredRecipes)
+      })
+      console.log(newRecipes);
+      this.setState({
+        keywordSearchRecipes:newRecipes
+      }, ()=> console.log(this.state.keywordSearchRecipes)
+      )
+    })
+  }
   goToRecipe = (recipe, user) => {
     this.setState({
       selectedRecipe:recipe,
@@ -54,8 +91,8 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" render={() => <Main />}/>
-          <Route exact path="/login" component={ LogIn }/>
-          <Route exact path="/signup" component={ SignUp }/>
+          <Route exact path="/login" render={() =>  <LogIn handleLogin={this.handleLogin}/> }  />
+          <Route exact path="/signup" render={() =>  <SignUp handleSignup={this.handleLogin}/>}  />
           <Route exact path="/home" render={(renderProps) => {
                   return( 
                           <div className="App">
@@ -123,7 +160,19 @@ class App extends Component {
                             <div className="app-bottom-container">
                               <Nav currentUser={ this.state.currentUser } />
                               <RecipePage {...renderProps} currentUser={ this.state.currentUser } user={this.state.selectedUser} recipe={this.state.selectedRecipe} goToProfile={this.goToProfile} />
-                              <SidePanel />
+                              <SidePanel infoType="random"/>
+                            </div>
+                          </div>
+                  )
+          } }  />
+          <Route exact path="/keyword-search" render={(renderProps) => {
+                  return( 
+                          <div className="App">
+                            <Search />
+                            <div className="app-bottom-container">
+                              <Nav currentUser={ this.state.currentUser } />
+                              <SearchResults {...renderProps} currentUser={ this.state.currentUser } searchValue={this.state.searchValue} searchType='keywords' recipes={this.state.keywordSearchRecipes} />
+                              <SidePanel infoType="keyword" keywordSearch={this.keywordSearch}/>
                             </div>
                           </div>
                   )

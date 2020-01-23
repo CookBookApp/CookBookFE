@@ -1,14 +1,43 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Label, Button, Form} from "semantic-ui-react"
 
 
-export default class LogIn extends Component {
+class LogIn extends Component {
 
-    
+    state = {
+        username:'',
+        password:''
+    }
 
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value
+        }, () => console.log(this.state))
+    }
 
-
+    handleLogin = (event) => {
+        event.preventDefault()
+        fetch('http://localhost:3000/login', {
+            method:'POST',
+            headers: {
+                'content-type':'application/json'
+            },
+            body: JSON.stringify({
+                user: {
+                    username:this.state.username,
+                    password:this.state.password
+                }
+            })
+        })
+        .then(r => r.json())
+        .then((resp) => {
+            localStorage.token = resp.jwt
+            console.log(localStorage.token)
+            this.props.handleLogin(resp.user)
+            this.props.history.push('/home')
+        })
+    }
 
     render() {
 
@@ -18,20 +47,18 @@ export default class LogIn extends Component {
 
             <h1>Log In</h1>
 
-            <form class="ui form">
+            <form onSubmit={this.handleLogin} class="ui form">
                 <label class="ui pointing below label" > Enter Existing Username: </label>
-                <input  type="text" name="name" />
+                <input  type="text" name="username" onChange={this.handleChange} />
                 <br></br>
                 <br></br>
 
                 <label class="ui pointing below label"> Password: </label>
-                <input type="password" name="password"/>
+                <input type="password" name="password" onChange={this.handleChange}/>
                 <br></br>
                 <br></br>
 
-                <Button type="submit" value="submit" color="blue">
-                Submit
-                </Button>
+                <input type='submit' value='Submit' />
             </form>
 
             <br></br>
@@ -43,3 +70,5 @@ export default class LogIn extends Component {
         )
     }
 }
+
+export default withRouter(LogIn)

@@ -44,7 +44,7 @@
 
 .app-bottom-container {
   display: flex;
-  background-color: blue;
+  background-color: #f7f7f7;
   width:100%;
   min-height: 100%;
   
@@ -52,16 +52,19 @@
 
 .nav {
   display: flexbox;
-  background-color: red;
+  background-color: #f7f7f7;
   width: 325px;
   max-height: 90%;
+  margin-top: 1rem;
   margin-right: 1rem;
+  margin-left:15%
 
 }
 
 .content-feed {
-  background-color: orange;
+  background-color: #f7f7f7;
   width: 600px;
+  margin-top:1rem;
   max-height: 100%;
   overflow: auto
 }
@@ -93,21 +96,29 @@
   width: 20rem
 }
 .side-panel {
-  background-color: darkmagenta;
+  background-color: #f7f7f7;
   width: 325px;
+  margin-top:1rem;
   max-height: 90%;
   margin-left: 1rem;
 }
 
 .search {
-  background-color: yellow;
+  background-color: #f72f02;
   width: 100%;
-  height: 40px;
+  height: 60px;
   margin:auto;
+  text-align: left
 }
 
 .search-input {
   margin: .75rem;
+  margin-left: 2rem;
+  width:30rem;
+}
+
+.search-button {
+  margin-left: 1rem
 }
 
 .recipe-card-sub-details {

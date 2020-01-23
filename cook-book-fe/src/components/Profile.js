@@ -14,7 +14,10 @@ class Profile extends Component {
     }
     getUser = () => {
         let slug = window.location.pathname.slice(9)
-        fetch(`http://localhost:3000/users/${slug}`)
+        fetch(`http://localhost:3000/users/${slug}`, {
+            headers: {
+                'Authorization':`Bearer ${localStorage.token}`
+            }})
         .then(r => r.json())
         .then(user => this.setState({
             user:user,

@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { Select, Input, Button, Form} from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { Select, Input, Button, Form, Icon } from 'semantic-ui-react'
+import { Link, withRouter } from 'react-router-dom'
 
 class Search extends Component {
+
+    componentWillUpdate() {
+        
+    //    return localStorage.token ? null : this.props.history.push('/')
+    }
+    
 
     state= {
         searchValue: '',
@@ -34,15 +40,19 @@ class Search extends Component {
 
 
     render() {
+        if (!localStorage.token) {
+            this.props.history.push('/')
+        }
         return (
             <div className="search" >
                 <Form.Field>
+                <Icon style={{'margin-left':'16%'}}name="book" size='large'></Icon>
                     <Input onChange={this.handleInputChange} className="search-input" type="text" />
 
-                    <Select onChange={this.handleSelectChange} placeholder="Search By" options={this.selectOptions} />
+                    <Select style={{'margin-left':'1rem'}}onChange={this.handleSelectChange} placeholder="Search By" options={this.selectOptions} />
                    
                     <Link to="/search">
-                        <Button onClick={() => this.props.handleSearch(this.state)}>
+                        <Button style={{'margin-left':'1rem'}} color='black' onClick={() => this.props.handleSearch(this.state)}>
                         Search   
                         </Button>
                     </Link>    
@@ -52,4 +62,4 @@ class Search extends Component {
     }
 }
 
-export default Search;
+export default withRouter(Search);
