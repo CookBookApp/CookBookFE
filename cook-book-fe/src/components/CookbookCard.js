@@ -6,7 +6,7 @@ class CookbookCard extends Component {
     render() {
         return (
             <div>
-                <Card className='nah' >
+                <Card fluid className='nah' >
                 <Image src={ this.props.cookbook.image } wrapped ui={false} />
                 <Card.Content>
                     {/* <Link to={`/recipe/${this.props.recipe.id}`} onClick={() => this.props.goToRecipe(this.props.recipe,this.props.recipe.user)}> */}

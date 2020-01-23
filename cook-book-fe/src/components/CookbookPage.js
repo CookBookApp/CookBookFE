@@ -11,7 +11,7 @@ class CookbookPage extends Component {
 
     componentDidMount() {
         console.log(this.props.currentUser)
-        fetch(`http://localhost:3000/users/${this.props.currentUser.id}`, {
+        fetch(`http://localhost:3000/users/${this.props.currentUser}`, {
             headers: {
                 'Authorization':`Bearer ${localStorage.token}`
             }})

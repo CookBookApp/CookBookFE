@@ -33,7 +33,8 @@ class LogIn extends Component {
         .then(r => r.json())
         .then((resp) => {
             localStorage.token = resp.jwt
-            console.log(localStorage.token)
+            localStorage.user = resp.user.id
+            console.log(resp.user)
             this.props.handleLogin(resp.user)
             this.props.history.push('/home')
         })

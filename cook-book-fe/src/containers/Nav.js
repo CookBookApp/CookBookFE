@@ -12,7 +12,7 @@ class Nav extends Component {
                 <NavLink to="/home"><Button fluid>Home</Button></NavLink>
                 <NavLink to="/new-recipe"><Button fluid>Add Recipe</Button></NavLink>
                 <NavLink to="/my-cookbooks"><Button fluid>My Cookbooks</Button></NavLink>
-                <NavLink to={`/profile/${this.props.currentUser.id}`}><Button fluid>Profile</Button></NavLink>
+                <NavLink to={`/profile/${localStorage.user}`}><Button fluid>Profile</Button></NavLink>
                 <NavLink to='/keyword-search'><Button fluid>Keyword Search</Button></NavLink>  
             </div>
         )
